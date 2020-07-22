@@ -20,6 +20,10 @@ class RdsQueryExecutor:
     def __del__(self):
         self.disconnect()
 
+    def execute(self, query):
+        cur = self.cnx.cursor()
+        cur.execute(query)
+
     def executeToRows(self, query):
         cur = self.cnx.cursor()
         cur.execute(query)
