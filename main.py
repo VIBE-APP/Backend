@@ -1,4 +1,5 @@
 import dbConfig
+from userCredentialTableManager import UserCredentialTableManager
 
 from flask import Flask
 
@@ -17,28 +18,14 @@ def hello_world():
 @app.route('/db')
 def testUserDbConnection():
 	# client = boto3.client('rds', region_name=dbConfig.REGION, aws_access_key_id=dbConfig.ACCESS_KEY, aws_secret_access_key=dbConfig.SECRET_ACCESS_KEY)
-
 	# token = client.generate_db_auth_token(DBHostname=dbConfig.ENDPOINT, Port=dbConfig.PORT, DBUsername=dbConfig.USERNAME, Region=dbConfig.REGION)
-	try:
-		conn =  mysql.connector.connect(host=dbConfig.ENDPOINT, user=dbConfig.USERNAME, passwd=dbConfig.PASSWORD, port=dbConfig.PORT, database=dbConfig.DBNAME)
-		cur = conn.cursor()
-		cur.execute("""SELECT * FROM user_credentials""")
-		query_results = cur.fetchall()
-		print(query_results)
-		
-		outString = ""
-		for r in query_results:
-			for i in range(len(r)):
-				outString += str(r[i])
+	
+	userCredTableManager = UserCredentialTableManager(dbConfig.ENDPOINT, dbConfig.USERNAME, dbConfig.PASSWORD, dbConfig.PORT, dbConfig.DBNAME)
 
-				if (i != len(r) - 1):
-					outString += ', '
-			outString += '\n'
-
-		return outString
-	except Exception as e:
-		print("Database connection failed due to {}".format(e))
-		return "Error"
+	if userCredTableManager.containsUser("ethan"):
+		return "CONTAINS"
+	
+	return "NOPE"
 
 # signing up a user
 @app.route('/signup')
