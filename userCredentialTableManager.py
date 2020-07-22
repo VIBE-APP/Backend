@@ -10,7 +10,6 @@ class UserCredentialTableManager:
         self.rdsExecutor.disconnect()
 
     def containsUser(self, user):
-        print(f"SELECT userId FROM user_credentials WHERE username = {user}")
         return len(self.rdsExecutor.executeToRows(f"SELECT userId FROM user_credentials WHERE username = '{user}'")) > 0
 
     def containsEmail(self, email):
