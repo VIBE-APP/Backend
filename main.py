@@ -1,7 +1,11 @@
 import dbConfig
 
 from flask import Flask
-import pymysql
+
+import mysql.connector
+import sys
+import boto3
+import os
 
 app = Flask(__name__)
 
@@ -12,27 +16,29 @@ def hello_world():
 
 @app.route('/db')
 def testUserDbConnection():
-	result = []
-	conn = pymysql.connect(dbConfig.ENDPOINT, user=dbConfig.USERNAME, passwd=dbConfig.PASSWORD, db=dbConfig.DBNAME, connect_timeout=5)
-	with conn.cursor() as cur:
-		cur.execute("""select * from user_credentials""")
-		conn.commit()
-		cur.close()
-		for row in cur:
-			result.append(list(row))
-		print("Data from RDS...")
-		print(result)
+	# client = boto3.client('rds', region_name=dbConfig.REGION, aws_access_key_id=dbConfig.ACCESS_KEY, aws_secret_access_key=dbConfig.SECRET_ACCESS_KEY)
 
-	outString = ""
-	for r in result:
-		for i in range(len(r)):
-			outString += str(r[i])
+	# token = client.generate_db_auth_token(DBHostname=dbConfig.ENDPOINT, Port=dbConfig.PORT, DBUsername=dbConfig.USERNAME, Region=dbConfig.REGION)
+	try:
+		conn =  mysql.connector.connect(host=dbConfig.ENDPOINT, user=dbConfig.USERNAME, passwd=dbConfig.PASSWORD, port=dbConfig.PORT, database=dbConfig.DBNAME)
+		cur = conn.cursor()
+		cur.execute("""SELECT * FROM user_credentials""")
+		query_results = cur.fetchall()
+		print(query_results)
+		
+		outString = ""
+		for r in query_results:
+			for i in range(len(r)):
+				outString += str(r[i])
 
-			if (i != len(r) - 1):
-				outString += ', '
-		outString += '\n'
+				if (i != len(r) - 1):
+					outString += ', '
+			outString += '\n'
 
-	return outString
+		return outString
+	except Exception as e:
+		print("Database connection failed due to {}".format(e))
+		return "Error"
 
 # signing up a user
 @app.route('/signup')
