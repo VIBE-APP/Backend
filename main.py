@@ -7,12 +7,8 @@ app = Flask(__name__)
 
 # testing purposes
 @app.route('/')
-<<<<<<< HEAD
 def hello_world(): 
     return "You've hit VIBE backend"
-=======
-def hello_world():
-    return 'You\'ve hit VIBE backend'
 
 @app.route('/db')
 def testUserDbConnection():
@@ -37,7 +33,6 @@ def testUserDbConnection():
 		outString += '\n'
 
 	return outString
->>>>>>> 90fa5ea3f0a925b274ca34e64be50fadbed22063
 
 # signing up a user
 @app.route('/signup')
