@@ -5,9 +5,9 @@ import json
 class signin_user:
     def __init__(self, username, password):
 
-        user = self.check_user_exsists(username, password)
+        user = self.check_user_exists(username, password)
 
-        # if user does not exsist, tell frontend about it
+        # if user does not exist, tell frontend about it
         if (user == None):
             return json.dumps({
                 "status":"user does not exsist"
@@ -17,7 +17,7 @@ class signin_user:
         # if successful, we return session token
         # if !successful
 
-    def check_user_exsists(self, username, password):
+    def check_user_exists(self, username, password):
         pass
 
         # we need to query the DB for this username

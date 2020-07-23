@@ -1,6 +1,7 @@
 import mysql.connector
 
 class RdsQueryExecutor:
+    """Helper class to manage access to the the-stronghold database"""
     cnx = None
     endpoint = None
     user = None
@@ -18,18 +19,26 @@ class RdsQueryExecutor:
         self.connect()
 
     def __del__(self):
-        self.disconnect()
+        self.disconnect()   # Must disconnect before you go out of scope to drop the connection
 
     def execute(self, query):
+        if (self.cnx.is_connected() == False):
+            self.connect()
+
         cur = self.cnx.cursor()
         cur.execute(query)
 
     def executeToRows(self, query):
+        """Executes any given query and returns the row output"""
+        if (self.cnx.is_connected() == False):
+            self.connect()
+            
         cur = self.cnx.cursor()
         cur.execute(query)
         return cur.fetchall()
 
     def executeToPrettyPrint(self, query):
+        """Executes any given query and returns a pretty printable version of the row response"""
         query_results = self.executeToRows(query)
 
         outString = ""
@@ -45,7 +54,6 @@ class RdsQueryExecutor:
     
     def connect(self):
         self.disconnect()
-
         self.cnx = mysql.connector.connect(host=self.endpoint, user=self.user, passwd=self.password, port=self.port, database=self.dbname)
 
     def disconnect(self):
