@@ -1,6 +1,6 @@
-# Backend
+# Vibe-Backend
 
-A Flask API server to handle: <br />
+A Flask API server to handle: <br /> <br />
 	- Signing up with AWS Aurora <br />
 	- Sigining in with AWS Aurora <br />
 	- Getting user profile data with AWS DynamoDB <br />
