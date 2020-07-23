@@ -27,7 +27,16 @@ class UserCredentialTableManager:
         self.rdsExecutor.execute(f"UPDATE user_credentials SET password = '{password}' WHERE email = '{email}'")
 
     def findUserIdByUsername(self, username):
+        # TODO:
+        # Return None when no entries exist
         return self.rdsExecutor.executeToRows(f"SELECT userId from user_credentials WHERE username = '{username}'")[0][0]
 
     def findUserIdByEmail(self, email):
+        # TODO:
+        # Return None when no entries exist
         return self.rdsExecutor.executeToRows(f"SELECT userId from user_credentials WHERE email = '{email}'")[0][0]
+
+    def validateLogin(self, username, password):
+        # TODO:
+        # Return None when no entries exist
+        return self.rdsExecutor.executeToRows(f"SELECT userId FROM user_credentials WHERE username = '{username}' and password = '{password}'")[0][0]
