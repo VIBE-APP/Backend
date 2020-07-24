@@ -5,6 +5,7 @@ from flask import Flask
 
 from scripts.signin_user import signin_user
 from scripts.signup_user import signup_user
+from scripts.get_user_profile import get_user_profile
 
 import mysql.connector
 import sys
@@ -36,7 +37,8 @@ def signin_script():
 # get using profile info - for user profile page
 @app.route('/get_user_profile_info')
 def get_user_profile_info():
-    pass
+    user_id = ''
+    return get_user_profile(user_id=user_id)
 
 # ------------------------------------------------------------------------------------------------------------------------------------------
 # temp function for ethan to test sql db connection
