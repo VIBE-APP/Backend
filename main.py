@@ -1,5 +1,5 @@
 import dbConfig
-from utils.user_credential_table_manager import user_credential_table_manager
+from utils.user_manager import user_manager
 
 from flask import Flask
 
@@ -25,29 +25,17 @@ def signup_script():
     username = '' # need to parse from frontend
     email = ''
     password = '' # need to parse from frontend
-    return signup_user(username=username, email=email, password=password)
+    return user_manager.signup_user(username, email, password)
 
 # signing in user
 @app.route('/signin')
 def signin_script():
     username = '' # need to parse from frontend
     password = '' # need to parse from frontend
-    return signin_user(username=username, password=password)
+    return user_manager.signin_user(username, password)
 
 # get using profile info - for user profile page
 @app.route('/get_user_profile_info')
 def get_user_profile_info():
     user_id = ''
     return get_user_profile(user_id=user_id)
-
-# ------------------------------------------------------------------------------------------------------------------------------------------
-# temp function for ethan to test sql db connection
-@app.route('/db')
-def testUserDbConnection():
-    userCredTableManager = UserCredentialTableManager(dbConfig.ENDPOINT, dbConfig.USERNAME, dbConfig.PASSWORD, dbConfig.PORT, dbConfig.DBNAME)
-    # client = boto3.client('rds', region_name=dbConfig.REGION, aws_access_key_id=dbConfig.ACCESS_KEY, aws_secret_access_key=dbConfig.SECRET_ACCESS_KEY)
-    # token = client.generate_db_auth_token(DBHostname=dbConfig.ENDPOINT, Port=dbConfig.PORT, DBUsername=dbConfig.USERNAME, Region=dbConfig.REGION)
-    if userCredTableManager.containsUser("ethan"):
-        return "CONTAINS"
-
-    return "NOPE"

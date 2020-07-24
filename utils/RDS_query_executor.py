@@ -22,13 +22,6 @@ class RDS_query_executor:
         self.disconnect()   # Must disconnect before you go out of scope to drop the connection
 
     def execute(self, query, data):
-        if (self.cnx.is_connected() == False):
-            self.connect()
-
-        cur = self.cnx.cursor()
-        cur.execute(query, data)
-
-    def executeToRows(self, query, data):
         """Executes any given query and returns the row output"""
         if (self.cnx.is_connected() == False):
             self.connect()
