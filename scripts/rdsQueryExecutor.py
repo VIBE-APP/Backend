@@ -21,25 +21,25 @@ class RdsQueryExecutor:
     def __del__(self):
         self.disconnect()   # Must disconnect before you go out of scope to drop the connection
 
-    def execute(self, query):
+    def execute(self, query, data):
         if (self.cnx.is_connected() == False):
             self.connect()
 
         cur = self.cnx.cursor()
-        cur.execute(query)
+        cur.execute(query, data)
 
-    def executeToRows(self, query):
+    def executeToRows(self, query, data):
         """Executes any given query and returns the row output"""
         if (self.cnx.is_connected() == False):
             self.connect()
             
         cur = self.cnx.cursor()
-        cur.execute(query)
+        cur.execute(query, data)
         return cur.fetchall()
 
-    def executeToPrettyPrint(self, query):
+    def executeToPrettyPrint(self, query, data):
         """Executes any given query and returns a pretty printable version of the row response"""
-        query_results = self.executeToRows(query)
+        query_results = self.executeToRows(query, data)
 
         outString = ""
         for r in query_results:

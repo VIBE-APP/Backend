@@ -12,31 +12,31 @@ class UserCredentialTableManager:
         self.rdsExecutor.disconnect()   # Must disconnect before you go out of scope to drop the connection
 
     def containsUser(self, username):
-        return len(self.rdsExecutor.executeToRows(f"SELECT userId FROM user_credentials WHERE username = '{username}'")) > 0
+        return len(self.rdsExecutor.executeToRows(f"SELECT userId FROM user_credentials WHERE username = %s", (username,))) > 0
 
     def containsEmail(self, email):
-        return len(self.rdsExecutor.executeToRows(f"SELECT userId FROM user_credentials WHERE email = '{email}'")) > 0
+        return len(self.rdsExecutor.executeToRows(f"SELECT userId FROM user_credentials WHERE email = %s", (email,))) > 0
 
     def insertNewUser(self, username, email, password):
-        self.rdsExecutor.execute(f"INSERT INTO user_credentials(username, email, password) VALUES ('{username}', '{email}', '{password}')")
+        self.rdsExecutor.execute(f"INSERT INTO user_credentials(username, email, password) VALUES (%s, %s, %s)", (username, email, password))
 
     def updateUserPasswordByUsername(self, username, password):
-        self.rdsExecutor.execute(f"UPDATE user_credentials SET password = '{password}' WHERE username = '{username}'")
+        self.rdsExecutor.execute(f"UPDATE user_credentials SET password = %s WHERE username = %s", (password, username))
 
     def updateUserPasswordByEmail(self, email, password):
-        self.rdsExecutor.execute(f"UPDATE user_credentials SET password = '{password}' WHERE email = '{email}'")
+        self.rdsExecutor.execute(f"UPDATE user_credentials SET password = %s WHERE email = %s", (password, email))
 
     def findUserIdByUsername(self, username):
         # TODO:
         # Return None when no entries exist
-        return self.rdsExecutor.executeToRows(f"SELECT userId from user_credentials WHERE username = '{username}'")[0][0]
+        return self.rdsExecutor.executeToRows(f"SELECT userId from user_credentials WHERE username = %s", (username,))[0][0]
 
     def findUserIdByEmail(self, email):
         # TODO:
         # Return None when no entries exist
-        return self.rdsExecutor.executeToRows(f"SELECT userId from user_credentials WHERE email = '{email}'")[0][0]
+        return self.rdsExecutor.executeToRows(f"SELECT userId from user_credentials WHERE email = %s", (email,))[0][0]
 
     def validateLogin(self, username, password):
         # TODO:
         # Return None when no entries exist
-        return self.rdsExecutor.executeToRows(f"SELECT userId FROM user_credentials WHERE username = '{username}' and password = '{password}'")[0][0]
+        return self.rdsExecutor.executeToRows(f"SELECT userId FROM user_credentials WHERE username = %s and password = %s", (username, password))[0][0]
