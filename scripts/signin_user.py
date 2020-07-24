@@ -3,23 +3,18 @@ import json
 
 # this class is made to sign in the user
 class signin_user:
+    
     def __init__(self, username, password):
+        # setup
+        self.userCredTableManager = UserCredentialTableManager(dbConfig.ENDPOINT, dbConfig.USERNAME, dbConfig.PASSWORD, dbConfig.PORT, dbConfig.DBNAME)
+        
+        self.run(username, password)
 
-        user = self.check_user_exists(username, password)
+    def run(self, username, password):
 
-        # if user does not exist, tell frontend about it
-        if (user == None):
-            return json.dumps({
-                "status":"user does not exsist"
-                })
+        userId = self.userCredTableManager.validateLogin(username, password)
+        # if the record does not exsist in the database
+        if userId == None:
+            return json.dumps( { "status":"Incorrect username or password" } )
 
-        # to do: add logic to check db for username + password combination
-        # if successful, we return session token
-        # if !successful
-
-    def check_user_exists(self, username, password):
-        pass
-
-        # we need to query the DB for this username
-        # to do: SQL team needs to write query for checking for the exsistence of this username in DB
-        # return NONE if user does not exsist, return username and password as an object if user exsists
+        return json.dumps( { "status":"success", "userId":userId } )

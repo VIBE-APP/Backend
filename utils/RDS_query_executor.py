@@ -1,6 +1,6 @@
 import mysql.connector
 
-class RdsQueryExecutor:
+class RDS_query_executor:
     """Helper class to manage access to the the-stronghold database"""
     cnx = None
     endpoint = None

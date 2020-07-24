@@ -1,6 +1,6 @@
-from rdsQueryExecutor import RdsQueryExecutor
+from RDS_query_executor import RDS_query_executor
 
-class UserCredentialTableManager:
+class user_credential_table_manager:
     """Helper class to manage access to user_credential table in the-stronghold"""
     rdsExecutor = None
 
