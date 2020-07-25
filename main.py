@@ -3,8 +3,6 @@ from utils.user_manager import user_manager
 
 from flask import Flask
 
-from scripts.signin_user import signin_user
-from scripts.signup_user import signup_user
 from scripts.get_user_profile import get_user_profile
 
 import mysql.connector

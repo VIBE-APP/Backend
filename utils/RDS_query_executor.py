@@ -3,11 +3,6 @@ import mysql.connector
 class RDS_query_executor:
     """Helper class to manage access to the the-stronghold database"""
     cnx = None
-    endpoint = None
-    user = None
-    password = None
-    port = None
-    dbname = None
 
     def __init__(self, endpoint, user, password, port, dbname):
         self.endpoint = endpoint
