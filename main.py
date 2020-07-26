@@ -1,7 +1,7 @@
 import dbConfig
 from utils.user_manager import user_manager
 
-from flask import Flask
+from flask import Flask, Response
 
 from scripts.signin_user import signin_user
 from scripts.signup_user import signup_user
@@ -11,6 +11,8 @@ import mysql.connector
 import sys
 import boto3
 import os
+
+from utils.videoTranscoder import transcodeVideo
 
 app = Flask(__name__)
 
@@ -39,3 +41,19 @@ def signin_script():
 def get_user_profile_info():
     user_id = ''
     return get_user_profile(user_id=user_id)
+
+@app.route('/testU')
+def s3UploadTest():
+    transcodeVideo("testMkv.mkv", "newOutputVideo.mkv")
+    return "video transcoded"
+
+@app.route('/testD')
+def s3DownloadTest():
+    client = boto3.client('s3', region_name=dbConfig.REGION, aws_access_key_id=dbConfig.ACCESS_KEY, aws_secret_access_key=dbConfig.SECRET_ACCESS_KEY)
+    file = client.get_object(Bucket='vibe-test-bucket', Key='testMkv.mkv')
+    file = client.get_object(Bucket='vibe-test-bucket', Key='testMkv.mkv')
+    return Response(
+        file['Body'].read(),
+        mimetype='video/quicktime',
+        headers={"Content-Disposition": "attachment;filename=newName.mkv"}
+    )

@@ -14,11 +14,11 @@ class user_manager:
     def signupUser(self, username, email, password):
         # check if user exsists
         if self.userCredTableManager.containsUser(username):
-        return json.dumps( { "status":"username already exists" } )
+            return json.dumps( { "status":"username already exists" } )
 
         # check if email exsists
         if self.userCredTableManager.containsEmail(email):
-        return json.dumps( { "status":"email already exists" } )
+            return json.dumps( { "status":"email already exists" } )
 
         # TODO: May need to do some error handling here to make sure that the record was actually inserted
         self.userCredTableManager.insertNewUser(username, email, password)
